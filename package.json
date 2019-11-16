@@ -5,7 +5,7 @@
   "main": "index.html",
   "scripts": {
     "all": "npm run build && npm run deploy",
-    "build": "parcel build index.html",
+    "build": "parcel build index.html --no-cache",
     "deploy": "gh-pages -d dist",
     "start": "parcel index.html --open"
   },
