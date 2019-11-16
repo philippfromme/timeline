@@ -1,0 +1,23 @@
+{
+  "name": "timeline",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.html",
+  "scripts": {
+    "all": "npm run build && npm run deploy",
+    "build": "parcel build index.html",
+    "deploy": "gh-pages -d dist",
+    "start": "parcel index.html --open"
+  },
+  "dependencies": {
+    "min-dash": "3.5.2",
+    "moment": "2.24.0",
+    "tiny-svg": "2.2.2"
+  },
+  "devDependencies": {
+    "@babel/core": "7.2.0",
+    "gh-pages": "^2.1.1",
+    "parcel-bundler": "^1.6.1"
+  },
+  "keywords": []
+}
