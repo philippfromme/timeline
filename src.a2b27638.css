@@ -1,0 +1,71 @@
+html,
+body,
+#timeline {
+  background-color: blue;
+  cursor: none;
+  height: 100%;
+  margin: 0;
+  overflow: hidden;
+  user-select: none;
+}
+
+body {
+  /* fix Chrome */
+  pointer-events: none
+}
+
+#title {
+  position: absolute;
+  top: 40px;
+  left: 40px;
+  color: white;
+  font-family: "Roboto Mono", monospace;
+  font-size: 20px;
+  padding: 0 0 10px 0;
+  border-bottom: solid 2px white;
+}
+
+.dot {
+  background: white;
+  border-radius: 100%;
+  box-shadow: 0 0 12px 12px white;
+  display: inline-block;
+  height: 16px;
+  position: absolute;
+  right: 40px;
+  top: 40px;
+  width: 16px;
+}
+
+#timeline svg {
+  height: 100%;
+  width: 100%;
+}
+
+#overlay {
+  background: white;
+  color: blue;
+  font-family: "Roboto Mono", monospace;
+  font-size: 20px;
+  padding: 5px 10px;
+  overflow: hidden;
+  position: absolute;
+  white-space: nowrap;
+}
+
+#overlay.hidden {
+  color: transparent;
+  width: 10px;
+  height: 10px;
+  padding: 0;
+}
+
+#timeline svg rect {
+  pointer-events: all;
+}
+
+#timeline svg text.hover {
+  font-weight: bold;
+}
+
+/*# sourceMappingURL=/src.a2b27638.css.map */
