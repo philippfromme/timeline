@@ -197,7 +197,9 @@ let countdownDate = null;
 const FONT_SIZE = 20,
       PADDING = 40;
 
-const svg = document.getElementById('svg'),
+// query selector instead of ID due to
+// https://github.com/parcel-bundler/parcel/issues/2474
+const svg = document.querySelector('svg'),
       overlay = document.getElementById('overlay');
 
 let bounds = getBounds(svg);
