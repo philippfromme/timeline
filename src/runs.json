@@ -1,0 +1,50 @@
+[
+  {
+    "title": "Berliner Neujahrslauf",
+    "date": "2020-01-01",
+    "id": "berliner-neujahrslauf",
+    "distance": 4
+  },
+  {
+    "title": "Intersport Olympia Lauf Potsdam",
+    "date": "2020-09-13",
+    "id": "intersport-olympia-lauf-potsdam",
+    "distance": 10
+  },
+  {
+    "title": "ProPotsdam Schlösserlauf",
+    "date": "2020-06-17",
+    "id": "propotsdam-schloesserlauf",
+    "distance": 21.0975
+  },
+  {
+    "title": "rbb Lauf",
+    "date": "2020-04-26",
+    "id": "rbb-lauf",
+    "distance": 14.065
+  },
+  {
+    "title": "Generali Berlin Half Marathon",
+    "date": "2020-04-05",
+    "id": "generali-berlin-half-marathon",
+    "distance": 21.0975
+  },
+  {
+    "title": "Adidas Runners City Night",
+    "date": "2020-08-01",
+    "id": "adidas-runners-city-night",
+    "distance": 10
+  },
+  {
+    "title": "SportScheck RUN BLN",
+    "date": "2020-08-23",
+    "id": "sport-scheck-run-bln",
+    "distance": 21.0975
+  },
+  {
+    "title": "BMW Berlin Marathon",
+    "date": "2020-09-27",
+    "id": "bmw-berlin-marathon",
+    "distance": 42.195
+  }
+];

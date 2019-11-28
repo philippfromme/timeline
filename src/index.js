@@ -14,7 +14,7 @@ import {
   getYears
 } from './date';
 
-import marathons from './marathons.json';
+import runs from './runs.json';
 
 import { map } from './math';
 
@@ -26,12 +26,17 @@ function getBounds(element) {
 
 function updateCountdown() {
   if (countdownDate) {
-    overlay.textContent = getDuration(countdownDate);
+    overlay.innerHTML = `<span>${ moment(countdownDate).format("dddd, MMMM Do YYYY") }</span><br><span>(${ getDuration(countdownDate) })</span>`;
   }
 }
 
 function drawTimeline(options) {
-  const { data, start, end } = options;
+  const {
+    data,
+    end,
+    start,
+    today
+  } = options;
 
   let line = create('line');
 
@@ -43,12 +48,32 @@ function drawTimeline(options) {
     stroke: 'white',
     strokeWidth: 2,
     x1: PADDING,
-    x2: width - PADDING,
-    y1: height - PADDING,
-    y2: height - PADDING
+    x2: width - PADDING - MARKER_SIZE,
+    y1: height - PADDING_BOTTOM,
+    y2: height - PADDING_BOTTOM
   });
 
-  drawLabel('Today', PADDING, 90);
+  // drawLabel('Today', getX(todayDate, start, end), 90, height - PADDING);
+
+  const circle = create('circle');
+
+  attr(circle, {
+    cx: PADDING,
+    cy: height - PADDING_BOTTOM,
+    r: MARKER_SIZE,
+    fill: 'white'
+  });
+
+  append(svg, circle);
+
+  const polygon = create('polygon');
+
+  attr(polygon, {
+    points: `${ width - PADDING },${ height - PADDING_BOTTOM } ${ width - PADDING - MARKER_SIZE * 2 },${ height - PADDING_BOTTOM - MARKER_SIZE } ${ width - PADDING - MARKER_SIZE * 2 },${ height - PADDING_BOTTOM + MARKER_SIZE }`,
+    fill: 'white'
+  });
+
+  append(svg, polygon);
 
   drawYearLabels(start, end, svg, bounds);
 
@@ -64,51 +89,15 @@ function drawTimeline(options) {
       strokeWidth: 2,
       x1: x,
       x2: x,
-      y1: height - PADDING,
-      y2: height - 2 * PADDING
+      y1: height - PADDING_BOTTOM,
+      y2: height - PADDING_BOTTOM - PADDING
     });
 
-    const [ rect, text ] = drawLabel(title, x);
-
-    rect.addEventListener('mouseenter', () => {
-      text.classList.add('hover');
-
-      overlay.classList.remove('hidden');
-
-      countdownDate = date;
-
-      updateCountdown();
-    });
-
-    rect.addEventListener('mouseleave', () => {
-      text.classList.remove('hover');
-
-      overlay.classList.add('hidden');
-    });
-  });
-
-  window.addEventListener('mousemove', event => {
-    const overlayBounds = overlay.getBoundingClientRect();
-
-    const align = event.pageX < bounds.width / 2 ? 'left' : 'right';
-
-    if (align === 'left' || overlay.classList.contains('hidden')) {
-      overlay.style.left = event.pageX + 'px';
-
-      overlay.classList.add('left');
-      overlay.classList.remove('right');
-    } else {
-      overlay.style.left = event.pageX - overlayBounds.width + 'px';
-
-      overlay.classList.add('right');
-      overlay.classList.remove('left');
-    }
-
-    overlay.style.top = event.pageY + 'px';
+    drawLabel(title, x);
   });
 }
 
-function drawLabel(title, pixels, angle = 60) {
+function drawLabel(title, pixels, angle = 60, y = null) {
   const { height } = bounds;
 
   const group = create('g');
@@ -116,7 +105,7 @@ function drawLabel(title, pixels, angle = 60) {
   append(svg, group);
 
   attr(group, {
-    transform: `translate(${pixels + FONT_SIZE / 3.5} ${height - 2 * PADDING})`
+    transform: `translate(${ pixels + FONT_SIZE / 3.5 } ${ y === null ? height - PADDING_BOTTOM - PADDING : y })`
   });
 
   const text = create('text');
@@ -150,19 +139,19 @@ function drawLabel(title, pixels, angle = 60) {
   });
 
   append(group, rect);
-
-  return [ rect, text ];
 }
 
 function drawYearLabels(start, end) {
   const years = getYears(start, end);
+
+  const { height } = bounds;
 
   years.forEach(year => {
     const date = `${year}-01-01`;
 
     const x = getX(date, start, end);
 
-    drawLabel(year, x, 90);
+    drawLabel(year, x, 90, height - PADDING);
   });
 }
 
@@ -180,26 +169,29 @@ function getX(date, start, end) {
 
 function draw() {
   drawTimeline({
-    data: marathons,
+    data: runs,
     start: startDate,
+    today: todayDate,
     end: endDate
   });
 }
 
 const redrawDebounced = debounce(draw, 100);
 
-const startDate = moment(),
-      endDate = '2021-01-01';
+const todayDate = moment(),
+      startDate = moment.min(todayDate, moment('2020-01-01')),
+      endDate = moment('2021-01-01');
 
 let countdownDate = null;
 
 const FONT_SIZE = 20,
-      PADDING = 40;
+      MARKER_SIZE = 5,
+      PADDING = 40,
+      PADDING_BOTTOM = 120;
 
 // query selector instead of ID due to
 // https://github.com/parcel-bundler/parcel/issues/2474
-const svg = document.querySelector('svg'),
-      overlay = document.getElementById('overlay');
+const svg = document.querySelector('svg');
 
 let bounds = getBounds(svg);
 
@@ -214,3 +206,29 @@ window.addEventListener('resize', () => {
 });
 
 draw();
+
+let scrollDirection = null;
+
+window.addEventListener('mousemove', ({ pageX }) => {
+  if (pageX < window.innerWidth / 10) {
+    scrollDirection = 'left';
+  } else if (pageX > window.innerWidth - window.innerWidth / 10) {
+    scrollDirection = 'right';
+  } else {
+    scrollDirection = null;
+  }
+});
+
+const scrollSpeed = 10;
+
+const scroll = () => {
+  if (scrollDirection === 'left') {
+    document.body.scrollLeft = document.body.scrollLeft - scrollSpeed;
+  } else if (scrollDirection === 'right') {
+    document.body.scrollLeft = document.body.scrollLeft + scrollSpeed;
+  }
+
+  requestAnimationFrame(scroll);
+};
+
+scroll();

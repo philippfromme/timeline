@@ -23,7 +23,7 @@ export function getYears(start, end) {
 
   const years = [];
 
-  let year = startYear + 1;
+  let year = startYear;
 
   while (year <= endYear) {
     years.push(year);

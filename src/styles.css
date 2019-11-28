@@ -2,16 +2,17 @@ html,
 body,
 #timeline {
   background-color: blue;
-  cursor: none;
+  /* cursor: none; */
   height: 100%;
   margin: 0;
-  overflow: hidden;
   user-select: none;
+  overflow-y: hidden;
 }
 
 body {
+  overflow-x: auto;
   /* fix Chrome */
-  pointer-events: none
+  /* pointer-events: none; */
 }
 
 #title {
@@ -37,27 +38,17 @@ body {
   width: 16px;
 }
 
+#timeline {
+  min-width: 1500px;
+}
+
 #timeline svg {
   height: 100%;
   width: 100%;
 }
 
-#overlay {
-  background: white;
-  color: blue;
-  font-family: "Roboto Mono", monospace;
-  font-size: 20px;
-  padding: 5px 10px;
-  overflow: hidden;
-  position: absolute;
-  white-space: nowrap;
-}
-
-#overlay.hidden {
-  color: transparent;
-  width: 10px;
-  height: 10px;
-  padding: 0;
+#timeline svg {
+  pointer-events: none;
 }
 
 #timeline svg rect {
@@ -66,4 +57,41 @@ body {
 
 #timeline svg text.hover {
   font-weight: bold;
+}
+
+.scroll {
+  position: absolute;
+  top: 50%;
+  transform: translate(0, -50%);
+  /* background-color: white;
+  opacity: 0.25; */
+  font-family: "Roboto Mono", monospace;
+  font-size: 20px;
+  height: 100%;
+  width: 10%;
+}
+
+.scroll#scroll-left {
+  left: 0;
+}
+
+.scroll#scroll-right {
+  right: 0;
+}
+
+::-webkit-scrollbar {
+  height: 12;
+}
+
+::-webkit-scrollbar-track {
+  background: blue;
+}
+
+::-webkit-scrollbar-thumb {
+  background: white;
+  border: solid 4px blue;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: white;
 }
