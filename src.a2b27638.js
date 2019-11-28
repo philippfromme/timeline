@@ -6295,44 +6295,73 @@ module.exports = [{
   "title": "Berliner Neujahrslauf",
   "date": "2020-01-01",
   "id": "berliner-neujahrslauf",
-  "distance": 4
-}, {
-  "title": "Intersport Olympia Lauf Potsdam",
-  "date": "2020-09-13",
-  "id": "intersport-olympia-lauf-potsdam",
-  "distance": 10
-}, {
-  "title": "ProPotsdam Schlösserlauf",
-  "date": "2020-06-17",
-  "id": "propotsdam-schloesserlauf",
-  "distance": 21.0975
-}, {
-  "title": "rbb Lauf",
-  "date": "2020-04-26",
-  "id": "rbb-lauf",
-  "distance": 14.065
+  "distance": 4,
+  "link": "https://www.berliner-neujahrslauf.de/"
 }, {
   "title": "Generali Berlin Half Marathon",
   "date": "2020-04-05",
   "id": "generali-berlin-half-marathon",
+  "distance": 21.0975,
+  "link": "https://www.generali-berliner-halbmarathon.de/en/"
+}, {
+  "title": "Airport Night Run",
+  "date": "2020-04-18",
+  "id": "airport-night-run",
+  "distance": 10,
+  "link": "https://berlin-laeuft.de/airportnightrun/"
+}, {
+  "title": "rbb Lauf",
+  "date": "0-04-26",
+  "id": "rbb-lauf",
+  "distance": 14.065,
+  "link": "https://www.rbblauf.de/"
+}, {
+  "title": "S 25 Berlin",
+  "date": "2020-05-03",
+  "id": "s-25-berlin",
+  "distance": 25,
+  "link": "https://berlin-laeuft.de/s25berlin/"
+}, {
+  "title": "ProPotsdam Schlösserlauf",
+  "date": "0-06-17",
+  "id": "propotsdam-schloesserlauf",
   "distance": 21.0975
 }, {
   "title": "Adidas Runners City Night",
   "date": "2020-08-01",
   "id": "adidas-runners-city-night",
-  "distance": 10
+  "distance": 10,
+  "link": "https://www.berlin-citynight.de/"
 }, {
   "title": "SportScheck RUN BLN",
   "date": "2020-08-23",
   "id": "sport-scheck-run-bln",
-  "distance": 21.0975
+  "distance": 21.0975,
+  "link": "https://www.berliner-generalprobe.de/"
+}, {
+  "title": "Volvo Tierparklauf",
+  "date": "2020-09-13",
+  "id": "volvo-tierparklauf",
+  "distance": 10,
+  "link": "https://berlin-laeuft.de/tierparklauf/"
+}, {
+  "title": "Intersport Olympia Lauf Potsdam",
+  "date": "0-09-13",
+  "id": "intersport-olympia-lauf-potsdam",
+  "distance": 10
 }, {
   "title": "BMW Berlin Marathon",
   "date": "2020-09-27",
   "id": "bmw-berlin-marathon",
-  "distance": 42.195
+  "distance": 42.195,
+  "link": "https://www.bmw-berlin-marathon.com/en/"
+}, {
+  "title": "Bridgestone Great 10K Berlin",
+  "date": "2020-10-11",
+  "id": "bridgestone-great-10k-berlin",
+  "distance": 10,
+  "link": "https://berlin-laeuft.de/the-bridgestone-great-10k/"
 }];
-;
 },{}],"src/math.js":[function(require,module,exports) {
 "use strict";
 
@@ -6481,6 +6510,7 @@ function drawTimeline(options) {
   drawYearLabels(start, end, svg, bounds);
   data.forEach(function (_ref) {
     var date = _ref.date,
+        link = _ref.link,
         title = _ref.title;
     var x = getX(date, start, end, bounds);
     line = (0, _tinySvg.create)('line');
@@ -6493,13 +6523,21 @@ function drawTimeline(options) {
       y1: height - PADDING_BOTTOM,
       y2: height - PADDING_BOTTOM - PADDING
     });
-    drawLabel(title, x);
+    var rect = drawLabel(title, x, 60, null, 'run');
+
+    if (link) {
+      rect.addEventListener('click', function () {
+        var win = window.open(link, '_blank');
+        win.focus();
+      });
+    }
   });
 }
 
 function drawLabel(title, pixels) {
   var angle = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : 60;
   var y = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : null;
+  var className = arguments.length > 4 ? arguments[4] : undefined;
   var _bounds2 = bounds,
       height = _bounds2.height;
   var group = (0, _tinySvg.create)('g');
@@ -6522,14 +6560,20 @@ function drawLabel(title, pixels) {
   });
   var rect = (0, _tinySvg.create)('rect');
   (0, _tinySvg.attr)(rect, {
-    fill: 'transparent',
-    height: FONT_SIZE + FONT_SIZE / 1.5,
+    fill: 'none',
+    height: FONT_SIZE + FONT_SIZE / 1.25,
     transform: "rotate(-".concat(angle, ")"),
     width: textBounds.width + PADDING / 2,
     x: 0,
     y: -FONT_SIZE - FONT_SIZE / 4
   });
   (0, _tinySvg.append)(group, rect);
+
+  if (className) {
+    group.classList.add(className);
+  }
+
+  return rect;
 }
 
 function drawYearLabels(start, end) {
@@ -6554,6 +6598,11 @@ function getX(date, start, end) {
 }
 
 function draw() {
+  Array.from(svg.childNodes).forEach(function (childNode) {
+    if (childNode.tagName !== 'defs') {
+      (0, _tinySvg.remove)(childNode);
+    }
+  });
   drawTimeline({
     data: _runs.default,
     start: startDate,
@@ -6579,7 +6628,6 @@ var svg = document.querySelector('svg');
 var bounds = getBounds(svg);
 setInterval(updateCountdown, 1000);
 window.addEventListener('resize', function () {
-  (0, _tinySvg.clear)(svg);
   bounds = svg.getBoundingClientRect();
   redrawDebounced();
 });
@@ -6637,7 +6685,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "59044" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "63284" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};
