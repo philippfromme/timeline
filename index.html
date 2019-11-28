@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>Timeline</title>
+    <title>2020 Runs</title>
     <meta charset="UTF-8" />
     <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico"/>
     <link
@@ -14,7 +14,14 @@
     <div id="title">2020 Runs</div>
     <div class="dot"></div>
     <div id="timeline">
-      <svg></svg>
+      <svg>
+        <defs>
+          <radialgradient id="grad1" x1="0%" y1="0%" x2="100%" y2="0%">
+            <stop offset="0%" style="stop-color:rgba(255, 255, 255, 0.5); stop-opacity:1" />
+            <stop offset="100%" style="stop-color:rgba(255, 255, 255, 0); stop-opacity:1" />
+          </radialgradient>
+        </defs>
+      </svg>
     </div>
 
     <script src="src/index.js"></script>

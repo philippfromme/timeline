@@ -6,7 +6,8 @@ import {
   append,
   attr,
   clear,
-  create
+  create,
+  remove
 } from 'tiny-svg';
 
 import {
@@ -77,7 +78,7 @@ function drawTimeline(options) {
 
   drawYearLabels(start, end, svg, bounds);
 
-  data.forEach(({ date, title }) => {
+  data.forEach(({ date, link, title }) => {
     const x = getX(date, start, end, bounds);
 
     line = create('line');
@@ -93,11 +94,18 @@ function drawTimeline(options) {
       y2: height - PADDING_BOTTOM - PADDING
     });
 
-    drawLabel(title, x);
+    const rect = drawLabel(title, x, 60, null, 'run');
+
+    if (link) {
+      rect.addEventListener('click', () => {
+        var win = window.open(link, '_blank');
+        win.focus();
+      });
+    }
   });
 }
 
-function drawLabel(title, pixels, angle = 60, y = null) {
+function drawLabel(title, pixels, angle = 60, y = null, className) {
   const { height } = bounds;
 
   const group = create('g');
@@ -130,8 +138,8 @@ function drawLabel(title, pixels, angle = 60, y = null) {
   const rect = create('rect');
 
   attr(rect, {
-    fill: 'transparent',
-    height: FONT_SIZE + FONT_SIZE / 1.5,
+    fill: 'none',
+    height: FONT_SIZE + FONT_SIZE / 1.25,
     transform: `rotate(-${ angle })`,
     width: textBounds.width + PADDING / 2,
     x: 0,
@@ -139,6 +147,12 @@ function drawLabel(title, pixels, angle = 60, y = null) {
   });
 
   append(group, rect);
+
+  if (className) {
+    group.classList.add(className);
+  }
+
+  return rect;
 }
 
 function drawYearLabels(start, end) {
@@ -168,6 +182,12 @@ function getX(date, start, end) {
 }
 
 function draw() {
+  Array.from(svg.childNodes).forEach(childNode => {
+    if (childNode.tagName !== 'defs') {
+      remove(childNode);
+    }
+  });
+
   drawTimeline({
     data: runs,
     start: startDate,
@@ -198,8 +218,6 @@ let bounds = getBounds(svg);
 setInterval(updateCountdown, 1000);
 
 window.addEventListener('resize', () => {
-  clear(svg);
-
   bounds = svg.getBoundingClientRect();
 
   redrawDebounced();
