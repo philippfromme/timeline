@@ -6644,6 +6644,25 @@ window.addEventListener('mousemove', function (_ref2) {
     scrollDirection = null;
   }
 });
+window.addEventListener('touchstart', function (event) {
+  event.preventDefault();
+  var changedTouches = event.changedTouches;
+  var touch = changedTouches[0];
+  var pageX = touch.pageX;
+
+  if (pageX < window.innerWidth / 10) {
+    scrollDirection = 'left';
+  } else if (pageX > window.innerWidth - window.innerWidth / 10) {
+    scrollDirection = 'right';
+  } else {
+    scrollDirection = null;
+  }
+}, {
+  passive: false
+});
+window.addEventListener('touchend', function () {
+  scrollDirection = null;
+});
 var scrollSpeed = 10;
 
 var scroll = function scroll() {
@@ -6685,7 +6704,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "63284" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "64465" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};
