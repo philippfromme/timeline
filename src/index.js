@@ -237,6 +237,28 @@ window.addEventListener('mousemove', ({ pageX }) => {
   }
 });
 
+window.addEventListener('touchstart', (event) => {
+  event.preventDefault();
+
+  const { changedTouches } = event;
+
+  const touch = changedTouches[ 0 ];
+
+  const { pageX } = touch;
+
+  if (pageX < window.innerWidth / 10) {
+    scrollDirection = 'left';
+  } else if (pageX > window.innerWidth - window.innerWidth / 10) {
+    scrollDirection = 'right';
+  } else {
+    scrollDirection = null;
+  }
+}, { passive: false });
+
+window.addEventListener('touchend', () => {
+  scrollDirection = null;
+});
+
 const scrollSpeed = 10;
 
 const scroll = () => {
