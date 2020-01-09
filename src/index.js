@@ -5,13 +5,14 @@ import moment from 'moment';
 import {
   append,
   attr,
-  clear,
   create,
-  remove
+  remove,
+  clear
 } from 'tiny-svg';
 
 import {
   getDuration,
+  getMonths,
   getYears
 } from './date';
 
@@ -54,29 +55,44 @@ function drawTimeline(options) {
     y2: height - PADDING_BOTTOM
   });
 
-  // drawLabel('Today', getX(todayDate, start, end), 90, height - PADDING);
+  const todayBounds = measureText('Today');
 
-  const circle = create('circle');
+  drawLabel('Today', getX(todayDate, start, end), 90, height - PADDING_BOTTOM + PADDING + todayBounds.width);
 
-  attr(circle, {
+  const todayCircle = create('circle');
+
+  attr(todayCircle, {
+    cx: getX(todayDate, start, end),
+    cy: height - PADDING_BOTTOM,
+    r: MARKER_SIZE,
+    fill: 'white'
+  });
+
+  append(svg, todayCircle);
+
+  const startCircle = create('circle');
+
+  attr(startCircle, {
     cx: PADDING,
     cy: height - PADDING_BOTTOM,
     r: MARKER_SIZE,
     fill: 'white'
   });
 
-  append(svg, circle);
+  append(svg, startCircle);
 
-  const polygon = create('polygon');
+  const endPolygon = create('polygon');
 
-  attr(polygon, {
+  attr(endPolygon, {
     points: `${ width - PADDING },${ height - PADDING_BOTTOM } ${ width - PADDING - MARKER_SIZE * 2 },${ height - PADDING_BOTTOM - MARKER_SIZE } ${ width - PADDING - MARKER_SIZE * 2 },${ height - PADDING_BOTTOM + MARKER_SIZE }`,
     fill: 'white'
   });
 
-  append(svg, polygon);
+  append(svg, endPolygon);
 
   drawYearLabels(start, end, svg, bounds);
+
+  drawMonthLabels(start, end, svg, bounds);
 
   data.forEach(({ date, link, title }) => {
     const x = getX(date, start, end, bounds);
@@ -161,11 +177,29 @@ function drawYearLabels(start, end) {
   const { height } = bounds;
 
   years.forEach(year => {
-    const date = `${year}-01-01`;
+    const date = `${ year }-01-01`;
+
+    const yearBounds = measureText(year);
 
     const x = getX(date, start, end);
 
-    drawLabel(year, x, 90, height - PADDING);
+    drawLabel(year, x, 90, height - PADDING_BOTTOM + PADDING + yearBounds.width);
+  });
+}
+
+function drawMonthLabels(start, end) {
+  const months = getMonths(start, end);
+
+  const { height } = bounds;
+
+  months.forEach(({ year, month, label }) => {
+    const date = `${ year }-${ month }-01`;
+
+    const monthBounds = measureText(month);
+
+    const x = getX(date, start, end);
+
+    drawLabel(month, x, 90, height - PADDING_BOTTOM + PADDING + monthBounds.width);
   });
 }
 
@@ -224,6 +258,30 @@ window.addEventListener('resize', () => {
 });
 
 draw();
+
+function measureText(text) {
+  let measureSvg = document.getElementById('measure-svg');
+
+  if (!measureSvg) {
+    measureSvg = create('svg');
+
+    measureSvg.id = 'measure-svg';
+
+    document.body.appendChild(measureSvg);
+  }
+
+  const textNode = create('text');
+
+  textNode.textContent = text;
+
+  append(measureSvg, textNode);
+
+  const bounds = textNode.getBoundingClientRect();
+
+  clear(measureSvg);
+
+  return bounds;
+}
 
 let scrollDirection = null;
 

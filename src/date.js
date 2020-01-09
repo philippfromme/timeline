@@ -33,3 +33,38 @@ export function getYears(start, end) {
 
   return years;
 }
+
+export function getMonths(start, end) {
+  const startYear = moment(start).year(),
+        startMonth = moment(start).month(),
+        endYear = moment(end).year(),
+        endMonth = moment(end).month();
+
+  const months = [];
+
+  for (let year = startYear; year < endYear; year++) {
+    for (let month = 2; month <= 12; month++) {
+      const newMonth = {
+        label: month,
+        month,
+        year
+      }
+
+      if (year === startYear) {
+        if (month >= startMonth) {
+          months.push(newMonth);
+        }
+      } else if (year === endYear) {
+        if (month <= endMonth) {
+          months.push(newMonth);
+        }
+      } else {
+        months.push(newMonth);
+      }
+    }
+
+    year++;
+  }
+
+  return months;
+}

@@ -16,14 +16,18 @@ body {
 }
 
 #title {
+  border-bottom: solid 2px white;
+  left: 40px;
+  padding: 0 0 10px 0;
   position: absolute;
   top: 40px;
-  left: 40px;
+}
+
+#title a {
   color: white;
   font-family: "Roboto Mono", monospace;
   font-size: 20px;
-  padding: 0 0 10px 0;
-  border-bottom: solid 2px white;
+  text-decoration: none;
 }
 
 .dot {
@@ -98,4 +102,10 @@ body {
 
 g.run:hover {
   cursor: pointer;
+}
+
+#measure-svg {
+  font-family: "Roboto Mono", monospace;
+  font-size: 20px;
+  visibility: none;
 }
