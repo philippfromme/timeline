@@ -6242,6 +6242,7 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.getDuration = getDuration;
 exports.getYears = getYears;
+exports.getMonths = getMonths;
 
 var _moment = _interopRequireDefault(require("moment"));
 
@@ -6290,6 +6291,40 @@ function getYears(start, end) {
 
   return years;
 }
+
+function getMonths(start, end) {
+  var startYear = (0, _moment.default)(start).year(),
+      startMonth = (0, _moment.default)(start).month(),
+      endYear = (0, _moment.default)(end).year(),
+      endMonth = (0, _moment.default)(end).month();
+  var months = [];
+
+  for (var year = startYear; year < endYear; year++) {
+    for (var month = 2; month <= 12; month++) {
+      var newMonth = {
+        label: month,
+        month: month,
+        year: year
+      };
+
+      if (year === startYear) {
+        if (month >= startMonth) {
+          months.push(newMonth);
+        }
+      } else if (year === endYear) {
+        if (month <= endMonth) {
+          months.push(newMonth);
+        }
+      } else {
+        months.push(newMonth);
+      }
+    }
+
+    year++;
+  }
+
+  return months;
+}
 },{"moment":"node_modules/moment/moment.js"}],"src/runs.json":[function(require,module,exports) {
 module.exports = [{
   "title": "Berliner Neujahrslauf",
@@ -6326,6 +6361,12 @@ module.exports = [{
   "date": "0-06-17",
   "id": "propotsdam-schloesserlauf",
   "distance": 21.0975
+}, {
+  "title": "SportScheck RUN DRS",
+  "date": "2020-06-14",
+  "id": "sport-scheck-run-drs",
+  "distance": 21.0975,
+  "link": "https://www.sportscheck.com/event/run/run-dresden/"
 }, {
   "title": "Adidas Runners City Night",
   "date": "2020-08-01",
@@ -6491,23 +6532,33 @@ function drawTimeline(options) {
     x2: width - PADDING - MARKER_SIZE,
     y1: height - PADDING_BOTTOM,
     y2: height - PADDING_BOTTOM
-  }); // drawLabel('Today', getX(todayDate, start, end), 90, height - PADDING);
-
-  var circle = (0, _tinySvg.create)('circle');
-  (0, _tinySvg.attr)(circle, {
+  });
+  var todayBounds = measureText('Today');
+  drawLabel('Today', getX(todayDate, start, end), 90, height - PADDING_BOTTOM + PADDING + todayBounds.width);
+  var todayCircle = (0, _tinySvg.create)('circle');
+  (0, _tinySvg.attr)(todayCircle, {
+    cx: getX(todayDate, start, end),
+    cy: height - PADDING_BOTTOM,
+    r: MARKER_SIZE,
+    fill: 'white'
+  });
+  (0, _tinySvg.append)(svg, todayCircle);
+  var startCircle = (0, _tinySvg.create)('circle');
+  (0, _tinySvg.attr)(startCircle, {
     cx: PADDING,
     cy: height - PADDING_BOTTOM,
     r: MARKER_SIZE,
     fill: 'white'
   });
-  (0, _tinySvg.append)(svg, circle);
-  var polygon = (0, _tinySvg.create)('polygon');
-  (0, _tinySvg.attr)(polygon, {
+  (0, _tinySvg.append)(svg, startCircle);
+  var endPolygon = (0, _tinySvg.create)('polygon');
+  (0, _tinySvg.attr)(endPolygon, {
     points: "".concat(width - PADDING, ",").concat(height - PADDING_BOTTOM, " ").concat(width - PADDING - MARKER_SIZE * 2, ",").concat(height - PADDING_BOTTOM - MARKER_SIZE, " ").concat(width - PADDING - MARKER_SIZE * 2, ",").concat(height - PADDING_BOTTOM + MARKER_SIZE),
     fill: 'white'
   });
-  (0, _tinySvg.append)(svg, polygon);
+  (0, _tinySvg.append)(svg, endPolygon);
   drawYearLabels(start, end, svg, bounds);
+  drawMonthLabels(start, end, svg, bounds);
   data.forEach(function (_ref) {
     var date = _ref.date,
         link = _ref.link,
@@ -6582,8 +6633,24 @@ function drawYearLabels(start, end) {
       height = _bounds3.height;
   years.forEach(function (year) {
     var date = "".concat(year, "-01-01");
+    var yearBounds = measureText(year);
     var x = getX(date, start, end);
-    drawLabel(year, x, 90, height - PADDING);
+    drawLabel(year, x, 90, height - PADDING_BOTTOM + PADDING + yearBounds.width);
+  });
+}
+
+function drawMonthLabels(start, end) {
+  var months = (0, _date.getMonths)(start, end);
+  var _bounds4 = bounds,
+      height = _bounds4.height;
+  months.forEach(function (_ref2) {
+    var year = _ref2.year,
+        month = _ref2.month,
+        label = _ref2.label;
+    var date = "".concat(year, "-").concat(month, "-01");
+    var monthBounds = measureText(month);
+    var x = getX(date, start, end);
+    drawLabel(month, x, 90, height - PADDING_BOTTOM + PADDING + monthBounds.width);
   });
 }
 
@@ -6591,8 +6658,8 @@ function getX(date, start, end) {
   var dateUnix = (0, _moment.default)(date).unix(),
       startUnix = (0, _moment.default)(start).unix(),
       endUnix = (0, _moment.default)(end).unix();
-  var _bounds4 = bounds,
-      width = _bounds4.width;
+  var _bounds5 = bounds,
+      width = _bounds5.width;
   var percent = (0, _math.map)(dateUnix, startUnix, endUnix, 0, 100);
   return (0, _math.map)(percent, 0, 100, 0 + PADDING, width - PADDING);
 }
@@ -6632,9 +6699,27 @@ window.addEventListener('resize', function () {
   redrawDebounced();
 });
 draw();
+
+function measureText(text) {
+  var measureSvg = document.getElementById('measure-svg');
+
+  if (!measureSvg) {
+    measureSvg = (0, _tinySvg.create)('svg');
+    measureSvg.id = 'measure-svg';
+    document.body.appendChild(measureSvg);
+  }
+
+  var textNode = (0, _tinySvg.create)('text');
+  textNode.textContent = text;
+  (0, _tinySvg.append)(measureSvg, textNode);
+  var bounds = textNode.getBoundingClientRect();
+  (0, _tinySvg.clear)(measureSvg);
+  return bounds;
+}
+
 var scrollDirection = null;
-window.addEventListener('mousemove', function (_ref2) {
-  var pageX = _ref2.pageX;
+window.addEventListener('mousemove', function (_ref3) {
+  var pageX = _ref3.pageX;
 
   if (pageX < window.innerWidth / 10) {
     scrollDirection = 'left';
@@ -6704,7 +6789,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "64465" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "49878" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};
