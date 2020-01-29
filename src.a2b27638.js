@@ -6333,6 +6333,12 @@ module.exports = [{
   "distance": 4,
   "link": "https://www.berliner-neujahrslauf.de/"
 }, {
+  "title": "Berlin Teufelsberg Run",
+  "date": "2020-02-23",
+  "id": "berlin-teufelsberg-run",
+  "distance": 10.7,
+  "link": "http://scb-berlin.de/berlin-teufelsberg-run/"
+}, {
   "title": "Generali Berlin Half Marathon",
   "date": "2020-04-05",
   "id": "generali-berlin-half-marathon",
@@ -6789,7 +6795,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "49878" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "52515" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};
