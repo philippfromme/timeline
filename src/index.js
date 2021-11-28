@@ -94,8 +94,10 @@ function drawTimeline(options) {
 
   drawMonthLabels(start, end, svg, bounds);
 
-  data.forEach(({ date, link, title }) => {
+  data.forEach(({ date, link, title, distance }) => {
     const x = getX(date, start, end, bounds);
+
+    const padding = distance * 10;
 
     line = create('line');
 
@@ -107,10 +109,10 @@ function drawTimeline(options) {
       x1: x,
       x2: x,
       y1: height - PADDING_BOTTOM,
-      y2: height - PADDING_BOTTOM - PADDING
+      y2: height - PADDING_BOTTOM - padding
     });
 
-    const rect = drawLabel(title, x, 60, null, 'run');
+    const rect = drawLabel(title, x, 90, null, 'run');
 
     if (link) {
       rect.addEventListener('click', () => {
@@ -129,7 +131,7 @@ function drawLabel(title, pixels, angle = 60, y = null, className) {
   append(svg, group);
 
   attr(group, {
-    transform: `translate(${ pixels + FONT_SIZE / 3.5 } ${ y === null ? height - PADDING_BOTTOM - PADDING : y })`
+    transform: `translate(${ pixels + FONT_SIZE / 3.5 + (className === 'run' ? 20 : 0) } ${ y === null ? height - PADDING_BOTTOM - PADDING : y })`
   });
 
   const text = create('text');
@@ -233,8 +235,8 @@ function draw() {
 const redrawDebounced = debounce(draw, 100);
 
 const todayDate = moment(),
-      startDate = moment.min(todayDate, moment('2020-01-01')),
-      endDate = moment('2021-01-01');
+      startDate = moment.min(todayDate, moment('2022-01-01')),
+      endDate = moment('2023-01-01');
 
 let countdownDate = null;
 

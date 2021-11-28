@@ -1,98 +1,37 @@
 [
   {
-    "title": "Berliner Neujahrslauf",
-    "date": "2020-01-01",
-    "id": "berliner-neujahrslauf",
-    "distance": 4,
-    "link": "https://www.berliner-neujahrslauf.de/"
-  },
-  {
-    "title": "Berlin Teufelsberg Run",
-    "date": "2020-02-23",
-    "id": "berlin-teufelsberg-run",
-    "distance": 10.7,
-    "link": "http://scb-berlin.de/berlin-teufelsberg-run/"
-  },
-  {
-    "title": "Generali Berlin Half Marathon",
-    "date": "2020-04-05",
-    "id": "generali-berlin-half-marathon",
+    "title": "Generali Halbmarathon Berlin",
+    "date": "2022-04-03",
+    "id": "generali-halbmarathon-berlin",
     "distance": 21.0975,
-    "link": "https://www.generali-berliner-halbmarathon.de/en/"
+    "link": "https://www.generali-berliner-halbmarathon.de/"
   },
   {
-    "title": "Airport Night Run",
-    "date": "2020-04-18",
-    "id": "airport-night-run",
-    "distance": 10,
-    "link": "https://berlin-laeuft.de/airportnightrun/"
+    "title": "SachsenTrail HalfTrail",
+    "date": "2022-06-25",
+    "id": "sachsentrail-halftrail",
+    "distance": 35,
+    "link": "https://www.sachsentrail.de/"
   },
   {
-    "title": "rbb Lauf",
-    "date": "0-04-26",
-    "id": "rbb-lauf",
-    "distance": 14.065,
-    "link": "https://www.rbblauf.de/"
-  },
-  {
-    "title": "S 25 Berlin",
-    "date": "2020-05-03",
-    "id": "s-25-berlin",
-    "distance": 25,
-    "link": "https://berlin-laeuft.de/s25berlin/"
-  },
-  {
-    "title": "ProPotsdam Schlösserlauf",
-    "date": "0-06-17",
-    "id": "propotsdam-schloesserlauf",
-    "distance": 21.0975
-  },
-  {
-    "title": "SportScheck RUN DRS",
-    "date": "2020-06-14",
-    "id": "sport-scheck-run-drs",
-    "distance": 21.0975,
-    "link": "https://www.sportscheck.com/event/run/run-dresden/"
-  },
-  {
-    "title": "Adidas Runners City Night",
-    "date": "2020-08-01",
+    "title": "adidas Runners City Night",
+    "date": "2022-07-30",
     "id": "adidas-runners-city-night",
     "distance": 10,
     "link": "https://www.berlin-citynight.de/"
   },
   {
-    "title": "SportScheck RUN BLN",
-    "date": "2020-08-23",
-    "id": "sport-scheck-run-bln",
-    "distance": 21.0975,
-    "link": "https://www.berliner-generalprobe.de/"
-  },
-  {
-    "title": "Volvo Tierparklauf",
-    "date": "2020-09-13",
-    "id": "volvo-tierparklauf",
-    "distance": 10,
-    "link": "https://berlin-laeuft.de/tierparklauf/"
-  },
-  {
-    "title": "Intersport Olympia Lauf Potsdam",
-    "date": "0-09-13",
-    "id": "intersport-olympia-lauf-potsdam",
-    "distance": 10
+    "title": "4:18:4 ERKNER",
+    "date": "2022-09-10",
+    "id": "4-18-4-erkner",
+    "distance": 4,
+    "link": "https://www.ironman.com/4184-erkner-register"
   },
   {
     "title": "BMW Berlin Marathon",
-    "date": "2020-09-27",
+    "date": "2022-09-25",
     "id": "bmw-berlin-marathon",
     "distance": 42.195,
-    "link": "https://www.bmw-berlin-marathon.com/en/"
-  },
-  {
-    "title": "Bridgestone Great 10K Berlin",
-    "date": "2020-10-11",
-    "id": "bridgestone-great-10k-berlin",
-    "distance": 10,
-    "link": "https://berlin-laeuft.de/the-bridgestone-great-10k/"
+    "link": "https://www.bmw-berlin-marathon.com/"
   }
 ]

@@ -1,7 +1,7 @@
 html,
 body,
 #timeline {
-  background-color: blue;
+  background: blue;
   /* cursor: none; */
   height: 100%;
   margin: 0;

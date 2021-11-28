@@ -62,8 +62,6 @@ export function getMonths(start, end) {
         months.push(newMonth);
       }
     }
-
-    year++;
   }
 
   return months;
