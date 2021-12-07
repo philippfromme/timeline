@@ -7,6 +7,13 @@
     "link": "https://www.generali-berliner-halbmarathon.de/"
   },
   {
+    "title": "S 25 Berlin",
+    "date": "2022-05-15",
+    "id": "s-25-berlin",
+    "distance": 25,
+    "link": "https://berlin-laeuft.de/s25berlin/"
+  },
+  {
     "title": "SachsenTrail HalfTrail",
     "date": "2022-06-25",
     "id": "sachsentrail-halftrail",
@@ -33,5 +40,12 @@
     "id": "bmw-berlin-marathon",
     "distance": 42.195,
     "link": "https://www.bmw-berlin-marathon.com/"
+  },
+  {
+    "title": "The Great 10K Berlin",
+    "date": "2022-10-16",
+    "id": "the-great-10k-berlin",
+    "distance": 10,
+    "link": "https://berlin-laeuft.de/the-great-10k/"
   }
 ]
