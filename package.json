@@ -12,7 +12,7 @@
   },
   "dependencies": {
     "min-dash": "3.5.2",
-    "moment": "2.24.0",
+    "moment": "2.29.4",
     "tiny-svg": "2.2.2"
   },
   "devDependencies": {
